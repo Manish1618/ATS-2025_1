@@ -16,6 +16,8 @@ export interface Task {
   token_reward: number;
   difficulty: 'easy' | 'medium' | 'hard' | 'legendary';
   category: string;
+  deadline?: string;
+  participation_cap?: number;
   requirements?: string[];
   is_completed?: boolean;
   completion_time?: string;
@@ -49,4 +51,11 @@ export interface Transaction {
   amount: number;
   description: string;
   created_at: string;
+}
+
+export interface UserAchievement {
+  id: string;
+  user_id: string;
+  achievement_id: string;
+  earned_at: string;
 }

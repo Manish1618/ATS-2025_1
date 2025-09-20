@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Web3Provider } from './contexts/Web3Context';
+import { AdminProvider } from './contexts/AdminContext';
 import AuthForm from './components/auth/AuthForm';
 import Navigation from './components/layout/Navigation';
 import Dashboard from './components/dashboard/Dashboard';
@@ -7,9 +9,14 @@ import ProfileCard from './components/profile/ProfileCard';
 import TaskList from './components/tasks/TaskList';
 import RewardStore from './components/rewards/RewardStore';
 import WalletOverview from './components/wallet/WalletOverview';
+import StreakTracker from './components/streaks/StreakTracker';
+import AchievementsList from './components/achievements/AchievementsList';
+import AdminDashboard from './components/admin/AdminDashboard';
+import { useAdmin } from './contexts/AdminContext';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
+  const { isAdmin } = useAdmin();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
@@ -47,6 +54,12 @@ const AppContent: React.FC = () => {
         return <RewardStore />;
       case 'wallet':
         return <WalletOverview />;
+      case 'streaks':
+        return <StreakTracker />;
+      case 'achievements':
+        return <AchievementsList />;
+      case 'admin':
+        return isAdmin ? <AdminDashboard /> : <Dashboard />;
       default:
         return <Dashboard />;
     }
@@ -66,7 +79,11 @@ const AppContent: React.FC = () => {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <Web3Provider>
+        <AdminProvider>
+          <AppContent />
+        </AdminProvider>
+      </Web3Provider>
     </AuthProvider>
   );
 }

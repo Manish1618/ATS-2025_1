@@ -5,10 +5,14 @@ import {
   CheckSquare, 
   ShoppingCart, 
   Wallet, 
+  Flame,
+  Award,
+  Settings,
   LogOut,
   Zap
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useAdmin } from '../../contexts/AdminContext';
 import { useUserProfile } from '../../hooks/useUserProfile';
 
 interface NavigationProps {
@@ -18,6 +22,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
   const { signOut } = useAuth();
+  const { isAdmin } = useAdmin();
   const { profile } = useUserProfile();
 
   const navItems = [
@@ -26,6 +31,9 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
     { id: 'tasks', label: 'Tasks', icon: CheckSquare },
     { id: 'rewards', label: 'Store', icon: ShoppingCart },
     { id: 'wallet', label: 'Wallet', icon: Wallet },
+    { id: 'streaks', label: 'Streaks', icon: Flame },
+    { id: 'achievements', label: 'Badges', icon: Award },
+    ...(isAdmin ? [{ id: 'admin', label: 'Admin', icon: Settings }] : []),
   ];
 
   const handleSignOut = async () => {
